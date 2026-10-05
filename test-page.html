@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hostile Site Simulator — Copy/Paste Blocker Test</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    max-width: 760px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: #1f2937;
+    line-height: 1.6;
+  }
+  h1 { font-size: 26px; }
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin: 16px 0;
+  }
+  .blocked-zone {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  #paste-target {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  ol li { margin: 6px 0; }
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #dc2626;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+  }
+  code { background: #f3f4f6; padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+</style>
+</head>
+<body>
+  <h1>🏰 Hostile Site Simulator</h1>
+  <p>This page pretends to be a website that hates your freedom. It blocks:
+    text selection, right-click, copy/cut (Ctrl+C / Ctrl+X), paste (Ctrl+V and
+    right-click-paste), and select-all (Ctrl+A) — using the exact same tricks
+    real sites use (<code>preventDefault()</code> on events + CSS
+    <code>user-select: none</code>).</p>
+
+  <div class="card">
+    <h3>How to test</h3>
+    <ol>
+      <li><b>Extension OFF</b> (badge shows OFF): try to select the text below, right-click, copy, or paste — every attempt shows a red 🚫 toast.</li>
+      <li><b>Extension ON</b> (badge shows ON, or press <code>Ctrl+Shift+U</code>): select the text, copy it, right-click, paste into the box. Everything just works. 🎉</li>
+      <li><b>Toggle back OFF</b>: the page's blockers come back instantly, no refresh needed.</li>
+    </ol>
+  </div>
+
+  <div class="card blocked-zone">
+    <h3>🔒 Blocked zone</h3>
+    <p>Try to select this sentence: <b>The quick brown fox jumps over the lazy dog.</b>
+       With the extension ON you can select, copy, and right-click me like a free person.</p>
+    <input id="paste-target" type="text" placeholder="Try pasting here — blocked while OFF, works while ON">
+  </div>
+
+  <p style="color:#6b7280; font-size:13px;">Note: for this local file to be covered by the
+  extension, enable <b>Allow access to file URLs</b> for the extension in
+  <code>chrome://extensions</code> → Details — or serve this folder over localhost.</p>
+
+  <div id="toast"></div>
+
+<script>
+  const toast = document.getElementById('toast');
+  let timer;
+  function showToast(msg) {
+    toast.textContent = '🚫 ' + msg;
+    toast.style.opacity = '1';
+    clearTimeout(timer);
+    timer = setTimeout(() => { toast.style.opacity = '0'; }, 1400);
+  }
+
+  // Everything a real copy-blocking site does — nothing exotic.
+  document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    showToast('Right-click blocked by this page!');
+  });
+  document.addEventListener('copy', (e) => {
+    e.preventDefault();
+    showToast('Copy blocked by this page!');
+  });
+  document.addEventListener('cut', (e) => {
+    e.preventDefault();
+    showToast('Cut blocked by this page!');
+  });
+  document.addEventListener('paste', (e) => {
+    e.preventDefault();
+    showToast('Paste blocked by this page!');
+  });
+  document.addEventListener('selectstart', (e) => {
+    e.preventDefault();
+    showToast('Selection blocked by this page!');
+  });
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && ['c', 'v', 'x', 'a'].includes((e.key || '').toLowerCase())) {
+      e.preventDefault();
+      showToast('Keyboard shortcut blocked by this page!');
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="13" height="13" x="9" y="9" rx="2.5" ry="2.5" fill="rgba(255,255,255,0.28)" stroke="none"/>
+        <path d="M5 15H4.5A2.5 2.5 0 0 1 2 12.5v-8A2.5 2.5 0 0 1 4.5 2h8A2.5 2.5 0 0 1 15 4.5V5"/>
+        <rect width="13" height="13" x="9" y="9" rx="2.5" ry="2.5"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Copy &amp; Paste Freedom</h1>
+      <p id="status" class="status">…</p>
+    </div>
+  </header>
+
+  <main>
+    <label class="switch-row" for="toggle">
+      <span class="switch-label">Enable copy &amp; paste</span>
+      <span class="switch">
+        <input type="checkbox" id="toggle" role="switch">
+        <span class="slider"></span>
+      </span>
+    </label>
+
+    <button id="reload" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12a9 9 0 1 1-2.64-6.36"/>
+        <path d="M21 3v6h-6"/>
+      </svg>
+      Reload this page
+    </button>
+
+    <p class="hint">Shortcut: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd> toggles anytime, even with this popup closed.</p>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

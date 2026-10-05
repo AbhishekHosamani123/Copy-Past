@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>paste-mechanism harness</title></head>
+<body>
+  <input id="a" value="COPY_ME_123">
+  <input id="b" value="">
+  <pre id="log"></pre>
+  <script>
+    // Simulates a hostile site. Blockers first...
+    window.__log = [];
+    const logEl = document.getElementById('log');
+    function log(m) { window.__log.push(m); logEl.textContent = window.__log.join('\n'); }
+
+    document.addEventListener('copy', (e) => { e.preventDefault(); log('site-blocked:copy'); });
+    document.addEventListener('paste', (e) => { e.preventDefault(); log('site-blocked:paste'); });
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && ['c', 'v', 'x', 'a'].includes((e.key || '').toLowerCase())) {
+        e.preventDefault();
+        log('site-blocked:key:' + (e.key || '?'));
+      }
+    });
+
+    // ...then the sneaky trick: let paste "happen" but revert it afterwards.
+    const lastValues = new WeakMap();
+    document.addEventListener('input', (e) => {
+      if (e.inputType === 'insertFromPaste') {
+        const prev = lastValues.get(e.target);
+        e.target.value = prev === undefined ? '' : prev;
+        log('site-reverted:paste');
+      } else {
+        lastValues.set(e.target, e.target.value);
+      }
+    });
+    lastValues.set(document.getElementById('a'), 'COPY_ME_123');
+    lastValues.set(document.getElementById('b'), '');
+  </script>
+</body>
+</html>
