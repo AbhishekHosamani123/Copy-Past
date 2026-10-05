@@ -10,25 +10,24 @@ body {
   color: #0f172a;
 }
 
+.banner {
+  padding: 16px 0 12px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.banner img {
+  width: 172px;
+  display: block;
+  margin: 0 auto;
+}
+
 header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 16px 13px;
+  padding: 11px 16px 12px;
   background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   color: #fff;
-}
-
-.logo {
-  width: 38px;
-  height: 38px;
-  flex: none;
-}
-
-.logo svg {
-  width: 100%;
-  height: 100%;
-  display: block;
+  text-align: center;
 }
 
 h1 {
